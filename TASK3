@@ -1,22 +1,26 @@
-import tensorflow as tf
+import music21
 
-def read_file(file):
-    with open(file, 'rb') as f:
-        model_data = f.read()
-    return model_data
+def load_midi(filepath):
+  try:
+    midi_stream = music21.converter.parse(filepath)
+    return midi_stream
+  except Exception as e:
+    print(f"Error loading MIDI file: {e}")
+    return None
 
-def main():
+def process_midi(midi_stream):
+  notes = []
+  for part in midi_stream.parts:
+    for note in part.notes:
+      notes.append((note.pitch, note.duration.quarterLength, note.instrument.name))
+  return notes
+midi_file = "your_music.mid"  
+midi_stream = load_midi(midi_file)
 
-    model_data = read_file("path_to_your_trained_model.pb")
-    graph_def = tf.compat.v1.GraphDef()
-    graph_def.ParseFromString(model_data)
-
-    with tf.compat.v1.Graph().as_default() as graph:
-        tf.import_graph_def(graph_def, name='')
-        session = tf.compat.v1.Session(graph=graph)
-
-    session.close()
-
-if __name__ == "__main__":
-    main()
-
+if midi_stream:
+  processed_notes = process_midi(midi_stream)
+  print("Extracted notes:")
+  for note in processed_notes:
+    print(f"Pitch: {note[0]}, Duration: {note[1]}, Instrument: {note[2]}")
+else:
+  print("Failed to process MIDI file.")
