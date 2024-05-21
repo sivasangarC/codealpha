@@ -1,30 +1,5 @@
-import requests
-
-def translate_text(subscription_key, text, from_lang, to_lang):
-    endpoint = "https://api.cognitive.microsofttranslator.com"
-    path = "/translate?api-version=3.0"
-    params = f"&from={from_lang}&to={to_lang}"
-    constructed_url = endpoint + path + params
-
-    headers = {
-        "Ocp-Apim-Subscription-Key": subscription_key,
-        "Content-Type": "application/json"
-    }
-
-    body = [{"Text": text}]
-    response = requests.post(constructed_url, headers=headers, json=body)
-    response.raise_for_status()
-    translation = response.json()[0]['translations'][0]['text']
-    return translation
-
-def main():
-    subscription_key = input("Enter your Azure subscription key: ").strip()
-    text = input("Enter text to translate: ").strip()
-    from_lang = input("Enter source language code (e.g., en for English): ").strip()
-    to_lang = input("Enter target language code (e.g., es for Spanish): ").strip()
-
-    translated_text = translate_text(subscription_key, text, from_lang, to_lang)
-    print("Translated text:", translated_text)
-
-if __name__ == "__main__":
-    main()
+from googletrans import Translator
+sentence=str(input("Enter the sentence: "))
+k=Translator()
+output=k.translate(sentence,src='en',dest='ta')
+print(output.text)
