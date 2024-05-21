@@ -26,5 +26,5 @@ def main():
     translated_text = translate_text(subscription_key, text, from_lang, to_lang)
     print("Translated text:", translated_text)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
