@@ -1,1 +1,38 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+string toLower(string str) {
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    return str;
+}
+
+int main() {
+   unordered_map<string, string> faqs = {
+        {"what is your product?", "Our product is designed to do X, Y, and Z."},
+        {"how does your product work?", "Our product works by utilizing A, B, and C technologies."},
+        {"what are the benefits of your product?", "The benefits of our product include P, Q, and R."},
+            };
+    cout << "Welcome to our FAQ system. Ask your questions:\n";
+    string userInput;
+
+        while (true) {
+        cout << "User: ";
+        getline(cin, userInput);
+        userInput = toLower(userInput); 
+        auto it = faqs.find(userInput);
+        if (it != faqs.end()) {
+            cout << "Bot: " << it->second << "\n";
+        } else if (userInput == "exit") {
+        cout << "Bot: Exiting the FAQ system. Goodbye!\n";
+            break;
+        } else {
+        cout << "Bot: I'm sorry, I don't understand that question.\n";
+        }
+    }
+
+    return 0;
+}
 
